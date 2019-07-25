@@ -1,0 +1,83 @@
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<style>
+	.echo{
+		color: blue;
+	}
+	.response{
+		color: black;
+	}
+	.err{
+		background-color: black;
+		color: red;
+	}
+</style>
+</head>
+
+<body>
+<div id="textout" style="overflow-y: auto; height:90%; border-style: solid; white-space:pre;"></div>
+
+<input id="textin" type="text" style="margin-top: 10px; width: 100%;">
+</body>
+
+<script>
+$(document).keypress(function(e) {
+    if(e.which == 13) {
+        ParseCommand();
+    }
+});
+
+var bases = 0;
+
+function ParseCommand(){
+	var command = $("#textin").val();
+	echo(command);
+	command = command.split(" ");
+	var keyword = command.shift();
+	switch(keyword){
+		case "say":
+			say(command);
+			break;
+		case "build":
+			bases++;
+			respond(bases + " starbases built.");
+			break;
+		default: 
+			err("invalid command: "+keyword);
+	}
+}
+
+function say(command){
+	var output = "";
+	var element;
+	for (element in command){
+		output+=command[element]+" ";
+	}
+	respond(output);
+}
+
+function echo(value){
+	clearinput();
+	var out = $("#textout");
+	out.append("<div class='echo'>" + value + "</div>");
+}
+
+function respond(value){
+	clearinput();
+	var out = $("#textout");
+	out.append("<div class='response'>" + value + "</div>");
+}
+
+function err(value){
+	clearinput();
+	var out = $("#textout");
+	out.append("<div class='err'>" + value + "</div>");
+}
+
+function clearinput(value){
+	$("#textin").val("");
+}
+</script>
+
+</html>
